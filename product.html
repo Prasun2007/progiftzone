@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Product Details</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="product-detail">
+  <img id="img">
+  <h2 id="name"></h2>
+  <h3 id="price"></h3>
+
+  <p id="desc"></p>
+
+  <ul id="features"></ul>
+
+  <p id="delivery"></p>
+
+  <label>Quantity:</label>
+  <input type="number" id="qty" value="1" min="1">
+
+  <h3 id="total"></h3>
+
+  <div class="payment">
+    <p>UPI ID: <b>prasunmandal12345@okicici</b></p>
+    <p>Pay & send screenshot on WhatsApp</p>
+  </div>
+
+  <button onclick="order()">Order on WhatsApp</button>
+</div>
+
+<script>
+let p = new URLSearchParams(window.location.search);
+let id = p.get("id");
+
+let products = {
+  mug: {
+    name: "Magic Mug",
+    price: 299,
+    img: "images/mug.jpg",
+    desc: "A heat-sensitive magic mug that reveals your photo when hot liquid is poured.",
+    features: [
+      "Custom photo print",
+      "Premium ceramic material",
+      "Dishwasher safe",
+      "Perfect for gifting"
+    ],
+    delivery: "Delivery in 3-5 days"
+  },
+
+  frame: {
+    name: "Photo Frame",
+    price: 399,
+    img: "images/frame.jpg",
+    desc: "Beautiful personalized photo frame to keep your memories alive.",
+    features: [
+      "High quality print",
+      "Wooden frame",
+      "Long lasting colors",
+      "Great for home decor"
+    ],
+    delivery: "Delivery in 4-6 days"
+  },
+
+  cushion: {
+    name: "LED Cushion",
+    price: 499,
+    img: "images/cushion.jpg",
+    desc: "Soft LED cushion with glowing light and your custom design.",
+    features: [
+      "LED lighting effect",
+      "Soft fabric",
+      "Rechargeable battery",
+      "Perfect night gift"
+    ],
+    delivery: "Delivery in 3-5 days"
+  }
+};
+
+let item = products[id];
+
+document.getElementById("name").innerText = item.name;
+document.getElementById("price").innerText = "₹" + item.price;
+document.getElementById("img").src = item.img;
+document.getElementById("desc").innerText = item.desc;
+document.getElementById("delivery").innerText = item.delivery;
+
+// features list
+let featureList = "";
+item.features.forEach(f => {
+  featureList += `<li>✔ ${f}</li>`;
+});
+document.getElementById("features").innerHTML = featureList;
+
+// total calculation
+document.getElementById("qty").addEventListener("input", updateTotal);
+
+function updateTotal(){
+  let q = document.getElementById("qty").value;
+  document.getElementById("total").innerText = "Total: ₹" + (q * item.price);
+}
+
+updateTotal();
+
+function order(){
+  let q = document.getElementById("qty").value;
+  let total = q * item.price;
+
+  let msg = `Order:
+${item.name}
+Qty: ${q}
+Total: ₹${total}`;
+
+  window.open(`https://wa.me/919735617042?text=${encodeURIComponent(msg)}`);
+}
+</script>
+
+</body>
+</html>
